@@ -38,10 +38,17 @@ casos_depto <- deptos_shp %>%
   left_join(casos_totales_depto) %>%
   mutate(n_casos_log = log(n_casos + 1))
 
+breaks <- c(0, 100,  500, 1000, 5000, 10000, 50000)
+#los breaks son una salvajada
 deptos_map <-
   tm_shape(casos_depto) +
   #tm_borders(col = "grey") +
-  tm_fill(col = "n_casos_log") +
+  #tm_fill(col = "n_casos") +
+  tm_polygons("n_casos",
+              title = "Casos",
+              breaks = breaks
+              # labels = text
+  ) +
   tm_style("col_blind") +
   tm_shape(front) +
   tm_borders(col = "grey") +
@@ -49,7 +56,7 @@ deptos_map <-
   NULL
 
 deptos_map
-
+tmap_save(filename = "./figs/deptos.png")
 # casos totales por municipio ----
 
 casos_totales_mpo <- datos %>%
@@ -61,13 +68,17 @@ casos_totales_mpo <- datos %>%
 mpos_shp <- mpos_shp %>%
   left_join(casos_totales_mpo)
 
+breaks <- c(0,10, 50, 100, 200, 500, 1000, 5000, 10000, 30000, 40000)
+hist(mpos_shp$n_casos, breaks = breaks)
 mpos_map <- mpos_shp %>%
   tm_shape() +
   tm_borders(lwd = 0) +
-  tm_fill(col = "n_casos_log") +
-  #tm_shape(deptos_shp) +
-  #tm_borders(col = "white") +
-  #tm_facets(by = "depto", free.coords = TRUE) +
+  #tm_fill(col = "n_casos") +
+  tm_polygons("n_casos",
+              title = "Casos",
+              breaks = breaks
+#              labels = text
+) +
   tm_style("col_blind") +
   tm_shape(front) +
   tm_borders(col = "grey") +
@@ -75,5 +86,5 @@ mpos_map <- mpos_shp %>%
   NULL
 
 mpos_map
-
+tmap_save(filename = "./figs/mpos.png")
 
