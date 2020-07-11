@@ -3,9 +3,21 @@ library(dplyr)
 library(sf)
 library(tmap)
 library(readr)
+library(spData)
+
+
+# os países fronteiriços ----
+front <- world %>%
+  filter(name_long %in% c("Brazil",
+                          "Colombia",
+                          "Ecuador",
+                          "Panama",
+                          "Peru",
+                          "Venezuela"))
 
 mpos_shp <- read_sf("./data/municipios.shp")
 deptos_shp <- read_sf("./data/departamentos.shp")
+
 datos <- read_csv("./data/Casos_positivos_de_COVID-19_en_Colombia_corregido.csv")
 
 all(mpos_shp$depto %in% datos$depto)
@@ -15,91 +27,53 @@ all(datos$`Ciudad de ubicación` %in% mpos_shp$municipio)
 setdiff(datos$depto, mpos_shp$depto)
 setdiff(mpos_shp$depto, datos$depto)
 
-#bien
 
-
-# Diferentes escalas de plots deben poder ser producidas
-
-
-# Escala depto. última fecha
-
-lastFN <- datos %>%
-  slice(which.max(`Fecha de notificación`)) %>%
-  pull(`Fecha de notificación`)
-
-
-# casos acumulados por departamento
-Casos_acum_depto <- datos %>%
+# casos totales por departamento ----
+casos_totales_depto <- datos %>%
   group_by(depto) %>%
   summarise(n_casos = n())
-names(Casos_acum_depto)
+names(casos_totales_depto)
 
+casos_depto <- deptos_shp %>%
+  left_join(casos_totales_depto) %>%
+  mutate(n_casos_log = log(n_casos + 1))
 
-#El mapa más simple sprimer mapa, casos acumulados por departamento
-Casos_depto <- deptos_shp %>%
-  merge(Casos_acum_depto)
-
-names(Casos_depto)
-casos_acumulado_por_depto <- tm_shape(Casos_depto) +
-  tm_borders() +
-  tm_fill(col = "n_casos") +
-  # tm_symbols(size = "n_casos",
-  #            col = "red",
-  #            border.col = "red",
-  #            scale = 2,
-  #            alpha = 0.5)
+deptos_map <-
+  tm_shape(casos_depto) +
+  #tm_borders(col = "grey") +
+  tm_fill(col = "n_casos_log") +
+  tm_style("col_blind") +
+  tm_shape(front) +
+  tm_borders(col = "grey") +
+  tm_layout(legend.bg.color = "white") +
   NULL
-casos_acumulado_por_depto
 
+deptos_map
 
-# casos acumulados por municipio ¡¡¡pero necesitamos filtrar por departamentos!!!
+# casos totales por municipio ----
 
-
-Casos_acum_mpo <- datos %>%
-  group_by(`Ciudad de ubicación`) %>%
-  summarise(n_casos = n())
-
-
-Casos_mpo <- mpos_shp %>% merge(Casos_acum_mpo)
-###estos mapas están pesados, no lo ruedes
-#Tratar así:
-Cundinamarca <- Casos_mpo %>%
-  filter(depto == "Cundinamarca")
-#casos_acumulado_por_mpo <- Cundinamarca %>%
- # tm_shape(Casos_mpo) +
-#tm_fill(col = "n_casos") +
-
-
-
-# Casos más recientes por fecha
-CasosFNmax <- datos %>%
-  filter(`Fecha de notificación` == lastFN-1) %>%
-  group_by(`Ciudad de ubicación`, depto) %>%
+casos_totales_mpo <- datos %>%
+  rename(municipio = `Ciudad de ubicación`) %>%
+  group_by(municipio) %>%
   summarise(n_casos = n()) %>%
-  mutate(FN = lastFN-1)
+  mutate(n_casos_log = log(n_casos + 1))
 
-CasosFNmax_depto <- datos %>%
-  filter(`Fecha de notificación` == lastFN-2) %>%
-  group_by(depto) %>%
-  summarise(n_casos = n()) %>%
-  mutate(FN = lastFN-2)
+mpos_shp <- mpos_shp %>%
+  left_join(casos_totales_mpo)
 
-
-
-#### esto es viejo
-tidyr::pivot_longer(data = col, cols = starts_with("F"),names_to = "Evento", values_to = "Fechas") %>%
-  group_by(Evento) %>%
-  add_tally() %>% arrange(Fechas) %>%
-  mutate(acum = cumsum(n)) %>% ungroup() %>%
-  filter(Evento %in% c("FIS", "Fecha de notificación", "Fecha diagnostico")) %>%
-  ggplot(aes(Fechas, n, fill = Evento)) +
-  geom_bar(stat = "identity") +
-  theme_minimal() +
+mpos_map <- mpos_shp %>%
+  tm_shape() +
+  tm_borders(lwd = 0) +
+  tm_fill(col = "n_casos_log") +
+  #tm_shape(deptos_shp) +
+  #tm_borders(col = "white") +
+  #tm_facets(by = "depto", free.coords = TRUE) +
+  tm_style("col_blind") +
+  tm_shape(front) +
+  tm_borders(col = "grey") +
+  tm_layout(legend.position = c("left", "top")) +
   NULL
-names(col)
-col <- col %>%
-  dplyr::filter(!is.na(FIS))
 
-
+mpos_map
 
 
