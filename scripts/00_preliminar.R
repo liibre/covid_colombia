@@ -12,7 +12,7 @@ deptos_shp <- read_sf("./data/departamentos.shp")
 #- [x] ö necesitamos hacerle scrapping a esto, buscar - ERA BAJAR DIRECTAMENTE, DUH
 
 datos <- readr::read_csv("https://www.datos.gov.co/api/views/gt2j-8ykr/rows.csv?accessType=DOWNLOAD")
-
+write_csv(datos, "data/Casos_positivos_de_COVID-19_en_Colombia.csv")
 #son un montón de asintomáticos: sin fecha de inicio de los síntomas
 datos %>%
   count(FIS == "Asintomático", FIS) %>%
