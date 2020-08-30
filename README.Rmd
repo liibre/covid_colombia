@@ -12,12 +12,30 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Datos de COVID-19 para Colombia
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-```{r}
+```{r remedy001, message=FALSE, echo=FALSE, warning=F}
+
+
+fecha <- vroom::vroom("./data/Casos_positivos_de_COVID-19_en_Colombia_corregido.csv", col_select = "fecha reporte web")
+f <- max(unique(fecha$`fecha reporte web`))
+
+```
+
+# Datos de COVID-19 para Colombia por departamentos y municipios hasta `r format(f, "%d/%m/%Y")`
+
+```{r, echo = FALSE, eval = TRUE, out.width = 350}
+knitr::include_graphics("./figs/deptos.png")
 knitr::include_graphics("./figs/mpos.png")
+```
+
+# Corrección de atrasos por _nowcasting_ bayesiano
+
+Para saber más sobre el análisis de corrección de atrasos de notificación por _nowcasting_ bayesiano, visite [https://covid19.br.github.io](https://covid19.br.github.io) 
+
+```{r, echo = FALSE, eval = TRUE, out.width= 700}
+knitr::include_graphics("./figs/Nowcasting.png")
 ```
 
