@@ -1,0 +1,7 @@
+install.packages("ggplot2")
+install.packages("tmap")
+install.packages("dplyr")
+install.packages("readr")
+install.packages("dplyr")
+install.packages("stringr")
+#check all dependencies after tidying the code (colmaps!) 
