@@ -1,6 +1,8 @@
 library(readr)
 library(ggplot2)
 library(dplyr)
+library(RColorBrewer)
+library(zoo)
 
 datos <- read_csv("./data/Casos_positivos_de_COVID-19_en_Colombia_corregido.csv")
 
@@ -15,36 +17,7 @@ tidyr::pivot_longer(data = datos, cols = starts_with("F"),names_to = "Evento", v
   theme_minimal() +
   NULL
 
-FIS_casos <- tidyr::pivot_longer(data = datos, cols = starts_with("F"),names_to = "Evento", values_to = "Fechas") %>%
-  filter(Evento == "FIS") %>%
-  add_tally() %>% arrange(Fechas) %>%
-  mutate(acum = cumsum(as.numeric(n))) %>%
-  ggplot(aes(Fechas, n)) +
-  geom_bar(stat = "identity") +
-  theme_minimal() +
-  xlab("Fecha de inicio de los síntomas") +
-  NULL
-FIS_casos
 
-
-lastFN <- datos %>%
-  slice(which.max(`FIS`)) %>%
-  pull(`FIS`)
-
-
-CasosFNmax <- datos %>%
-  filter(`FIS` == lastFN - 1) %>%
-  group_by(`Ciudad de ubicación`, depto) %>%
-  summarise(n_casos = n()) %>%
-  mutate(FN = lastFN - 1)
-
-CasosFNmax_depto <- datos %>%
-  filter(`Fecha de notificación` == lastFN-2) %>%
-  group_by(depto) %>%
-  summarise(n_casos = n()) %>%
-  mutate(FN = lastFN - 2)
-
-names(datos)
 datos_not <- datos %>%
   group_by(`Fecha de notificación`) %>%
   # Diferentes escalas de plots deben poder ser producidas
@@ -68,8 +41,17 @@ datos <-
 
 datos_fecha <- datos %>%
   group_by(data_final) %>%
-  summarise(n = n())
+  summarise(n = n()) %>%
+  mutate(mm = zoo::rollmean(n, k = 5, na.pad = TRUE, align = "right"))
 
   ggplot(datos_fecha, aes(x = data_final, y = n)) +
-  geom_line() +
-  theme_minimal()
+  geom_line(col = "grey") +
+  geom_line(aes(y = mm, col = "media móvil (5 días)"), lwd = 1) +
+  theme_minimal() +
+    scale_color_brewer(type = "qual") +
+    theme(legend.title = element_blank(),
+          legend.position = c(0.2, 0.8)) +
+    ggtitle("Número de casos por día, por fecha de inicio de los síntomas (FIS)") +
+    xlab("Fecha de inicio de los síntomas (FIS)") +
+    ylab("Número de casos")
+ggsave("figs/casos_diarios.png")

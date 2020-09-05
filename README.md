@@ -5,11 +5,15 @@
 
 <!-- badges: end -->
 
-# Datos de COVID-19 para Colombia por departamentos y municipios hasta 29/08/2020
+# Datos de COVID-19 para Colombia por departamentos y municipios hasta 03/09/2020
 
 <img src="./figs/deptos.png" width="350" /><img src="./figs/mpos.png" width="350" />
 
-# Corrección de atrasos por *nowcasting* bayesiano
+# Número de casos por incio de los síntomas
+
+<img src="./figs/casos_diarios.png" width="600" />
+
+# Corrección de atrasos por *nowcasting* bayesiano (Mc Gough *et al* 2020)
 
 Para saber más sobre el análisis de corrección de atrasos de
 notificación por *nowcasting* bayesiano, visite la página del
@@ -19,4 +23,12 @@ independiente de investigadores de diversas universidades de Brasil y
 del mundo, que realiza análisis relativos al estado de la pandemia en
 Brasil.
 
-<img src="./figs/Nowcasting.png" width="700" />
+<img src="./figs/Nowcasting.png" width="600" />
+
+# Referencia
+
+McGough, S. F. et al. (2020) ‘Nowcasting by Bayesian Smoothing: A
+flexible, generalizable model for real-time epidemic tracking’, PLOS
+Computational Biology, 16(4), p. e1007735. doi:
+10.1371/journal.pcbi.1007735.
+<https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007735>

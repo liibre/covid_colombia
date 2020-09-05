@@ -12,6 +12,7 @@ library(sf)
 #- x ö necesitamos hacerle scrapping a esto, buscar
 
 datos <- readr::read_csv("https://www.datos.gov.co/api/views/gt2j-8ykr/rows.csv?accessType=DOWNLOAD")
+write_csv(datos, "data/Casos_positivos_de_COVID-19_en_Colombia.csv")
 
 #son un montón de asintomáticos: sin fecha de inicio de los síntomas
 datos %>%
@@ -32,7 +33,9 @@ datos <- datos %>%
                                          pattern = "-   -",
                                          replacement = ""))
 
+#usa municipios y departamentos de colmaps (son los shapes)
 mpos_shp <- read_sf("./data/municipios.shp")
+deptos_shp <- read_sf("./data/departamentos.shp")
 
 setdiff(unique(datos$`Ciudad de ubicación`), unique(mpos_shp$municipio))
 
@@ -45,8 +48,11 @@ datos$`Ciudad de ubicación`[datos$`Ciudad de ubicación` == "Coloso"] <- "Colos
 datos$`Ciudad de ubicación`[datos$`Ciudad de ubicación` == "San Benito abad"] <- "San Benito Abad"#ya
 datos$`Ciudad de ubicación`[datos$`Ciudad de ubicación` == "San Pedro los Milagros"] <- "San Pedro de los Milagros"#ya
 datos$`Ciudad de ubicación`[datos$`Ciudad de ubicación` == "San José la Montaña"] <- "San José de la Montaña"#ya
-
+datos$`Ciudad de ubicación`[datos$`Ciudad de ubicación` == "Armero"] <- "Armero Guayabal" #ya
+datos$`Ciudad de ubicación`[datos$`Ciudad de ubicación` == "El Litoral San Juan"] <- "El Litoral del San Juan" #ya
 setdiff(unique(datos$`Ciudad de ubicación`), unique(mpos_shp$municipio))
+
+nao_tem <- setdiff(unique(datos$`Ciudad de ubicación`), unique(mpos_shp$municipio))
 
 #departamentos y distritos especiales
 setdiff(mpos_shp$depto, datos$`Departamento o Distrito`)

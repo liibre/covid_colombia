@@ -18,8 +18,8 @@ FIS_diag <- datos %>%
   data.frame() %>%
   mutate_all(.funs = function(x) as.Date(x))
 
-window <- 80
-trim.now <- 10
+window <- 100
+trim.now <- 15
 dados.now <- NobBS(
   data = FIS_diag,
   now = max(FIS_diag$data_final) - trim.now,
@@ -44,10 +44,12 @@ ggplot(dados.now$estimates, aes(x = onset_date, y = estimate)) +
   xlab("Fecha de inicio de los síntomas") +
   ylab("Fecha de notificación") +
   theme(legend.title = element_blank()) +
-  ggtitle(paste("Corrección de atrasos de notificación por nowcasting bayesiano (Mc Gough 2020).  \nVentana de", window, "días, omitiendo los", trim.now, "días más recientes",
+  ggtitle(paste("Número de casos estimados por corrección de atrasos de notificación por nowcasting bayesiano (Mc Gough 2020).  \nVentana de", window, "días, omitiendo los", trim.now, "días más recientes",
                 "
                 \nDatos originales: Instituto Nacional de Salud.
-                \nCrédito: Observatorio COVID-19BR https://covid19br.github.io/, ¡liibre!"))
+                \nCrédito: Observatorio COVID-19BR https://covid19br.github.io/, ¡liibre!")) +
+  theme(legend.title = element_blank(),
+        legend.position = c(0.2, 0.8))
 ggsave("figs/Nowcasting.png")
 
 ggplot(datos,
