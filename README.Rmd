@@ -45,7 +45,7 @@ Para saber más sobre el análisis de corrección de atrasos de notificación po
 
 
 ```{r, echo = FALSE, eval = TRUE, out.width= 600}
-knitr::include_graphics("./figs/Nowcasting.png")
+knitr::include_graphics("figs/Nowcasting.png")
 ```
 
 # Referencia

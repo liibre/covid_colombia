@@ -23,7 +23,7 @@ independiente de investigadores de diversas universidades de Brasil y
 del mundo, que realiza análisis relativos al estado de la pandemia en
 Brasil.
 
-<img src="./figs/Nowcasting.png" width="600" />
+<img src="figs/Nowcasting.png" width="600" />
 
 # Referencia
 
