@@ -5,13 +5,13 @@
 
 <!-- badges: end -->
 
-# Datos de COVID-19 para Colombia por departamentos y municipios hasta 03/09/2020
+# Datos de COVID-19 para Colombia por departamentos y municipios hasta 06/09/2020
 
 <img src="./figs/deptos.png" width="350" /><img src="./figs/mpos.png" width="350" />
 
-# Número de casos por incio de los síntomas
+# Número de casos y fallecimientos diarios, por fecha de inicio de los síntomas
 
-<img src="./figs/casos_diarios.png" width="600" />
+<img src="./figs/casos_diarios.png" width="600" /><img src="./figs/muertes_diarias.png" width="600" />
 
 # Corrección de atrasos por *nowcasting* bayesiano (Mc Gough *et al* 2020)
 
@@ -23,7 +23,7 @@ independiente de investigadores de diversas universidades de Brasil y
 del mundo, que realiza análisis relativos al estado de la pandemia en
 Brasil.
 
-<img src="figs/Nowcasting.png" width="600" />
+<img src="./figs/Nowcasting.png" width="600" /><img src="./figs/Nowcasting_muertes.png" width="600" />
 
 # Referencia
 

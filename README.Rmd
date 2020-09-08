@@ -31,12 +31,12 @@ knitr::include_graphics("./figs/deptos.png")
 knitr::include_graphics("./figs/mpos.png")
 ```
 
-# Número de casos por incio de los síntomas
+# Número de casos y fallecimientos diarios, por fecha de inicio de los síntomas
 
 ```{r, echo = FALSE, eval = TRUE, out.width= 600}
 knitr::include_graphics("./figs/casos_diarios.png")
+knitr::include_graphics("./figs/muertes_diarias.png")
 ```
-
 
 
 # Corrección de atrasos por _nowcasting_ bayesiano (Mc Gough _et al_ 2020)
@@ -45,7 +45,8 @@ Para saber más sobre el análisis de corrección de atrasos de notificación po
 
 
 ```{r, echo = FALSE, eval = TRUE, out.width= 600}
-knitr::include_graphics("figs/Nowcasting.png")
+knitr::include_graphics("./figs/Nowcasting.png")
+knitr::include_graphics("./figs/Nowcasting_muertes.png")
 ```
 
 # Referencia

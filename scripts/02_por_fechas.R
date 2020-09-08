@@ -55,3 +55,26 @@ datos_fecha <- datos %>%
     xlab("Fecha de inicio de los síntomas (FIS)") +
     ylab("Número de casos")
 ggsave("figs/casos_diarios.png")
+
+# muertes
+names(datos)
+datos %>% count(!is.na(`Fecha de muerte`))
+muertes_fecha <-
+  datos %>%
+  filter(!is.na(`Fecha de muerte`)) %>%
+  group_by(data_final) %>%
+  summarise(n = n()) %>%
+  mutate(mm = zoo::rollmean(n, k = 5, na.pad = TRUE, align = "right"))
+#plot----
+muertes_fecha %>%
+  ggplot(aes(x = data_final, y = n)) +
+  geom_line(col = "grey") +
+  geom_line(aes(y = mm, col = "media móvil (5 días)"), lwd = 1) +
+  theme_minimal() +
+  scale_color_brewer(type = "qual") +
+  theme(legend.title = element_blank(),
+        legend.position = c(0.2, 0.8)) +
+  ggtitle("Número de fallecimientos por día, por fecha de inicio de los síntomas (FIS)") +
+  xlab("Fecha de inicio de los síntomas (FIS)") +
+  ylab("Número de casos")
+ggsave("figs/muertes_diarias.png")
