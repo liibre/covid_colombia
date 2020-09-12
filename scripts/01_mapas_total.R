@@ -14,13 +14,6 @@ deptos_shp <- read_sf("../data/departamentos.shp")
 
 datos <- read_csv("../data/Casos_positivos_de_COVID-19_en_Colombia_corregido.csv")
 
-# all(mpos_shp$depto %in% datos$depto)
-# setdiff(mpos_shp$municipio, datos$`Ciudad de ubicación`)
-# all(datos$`Ciudad de ubicación` %in% mpos_shp$municipio)
-#
-# setdiff(datos$depto, mpos_shp$depto)
-# setdiff(mpos_shp$depto, datos$depto)
-
 
 # casos totales por departamento ----
 casos_totales_depto <- datos %>%

@@ -54,6 +54,7 @@ datos_fecha <- datos %>%
     ggtitle("Número de casos por día, por fecha de inicio de los síntomas (FIS)") +
     xlab("Fecha de inicio de los síntomas (FIS)") +
     ylab("Número de casos")
+
 ggsave("figs/casos_diarios.png")
 
 # muertes
@@ -78,3 +79,5 @@ muertes_fecha %>%
   xlab("Fecha de inicio de los síntomas (FIS)") +
   ylab("Número de casos")
 ggsave("figs/muertes_diarias.png")
+
+

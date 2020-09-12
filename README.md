@@ -5,7 +5,7 @@
 
 <!-- badges: end -->
 
-# Datos de COVID-19 para Colombia por departamentos y municipios hasta 06/09/2020
+# Datos de COVID-19 para Colombia por departamentos y municipios hasta 10/09/2020
 
 <img src="./figs/deptos.png" width="350" /><img src="./figs/mpos.png" width="350" />
 

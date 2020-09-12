@@ -20,12 +20,12 @@ FIS_diag <- datos %>%
 
 FIS_diag_muertes <- datos %>%
   filter(!is.na(`Fecha de muerte`)) %>%
-  select(FIS, data_final) %>%
+  select(FIS, data_final, `Fecha de muerte`, `fecha reporte web`) %>%
   filter(complete.cases(.)) %>%
   data.frame() %>%
   mutate_all(.funs = function(x) as.Date(x))
 
-window <- 90
+window <- 80
 trim.now <- 10
 dados.now <- NobBS(
   data = FIS_diag,
@@ -92,3 +92,16 @@ ggplot(dados_now_muertes$estimates, aes(x = onset_date, y = estimate)) +
   theme(legend.title = element_blank(),
         legend.position = c(0.2, 0.8))
 ggsave("figs/Nowcasting_muertes.png")
+
+
+# Distribución de los atrasos
+FIS_diag %>% mutate(atraso = data_final - FIS) %>%
+  ggplot(aes(x = atraso)) +
+  geom_density()
+ggsave("figs/distribuction_atrasos_casos.png")
+FIS_diag_muertes %>%
+  mutate(atraso = Fecha.de.muerte - FIS) %>%
+  ggplot(aes(x = atraso)) +
+  geom_density() +
+  theme_minimal()
+ggsave("figs/distribuction_atrasos_muertes.png")
